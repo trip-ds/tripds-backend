@@ -22,6 +22,32 @@ public class MemberController {
     private final MemberService memberService;
     private final JWTUtil jwtUtil;
 
+    @PostMapping("/signup")
+    public ResponseEntity<?> signup(MemberDto memberDto) throws Exception {
+        log.debug("sign up user = {}", memberDto);
+
+        // email 중복 체크
+        MemberDto existingMember = memberService.userInfo(memberDto.getEmail());
+
+        // 중복되면 message 전달
+        if (existingMember != null) {
+            Map<String, String> resultMap = new HashMap<>();
+            resultMap.put("message", "이미 가입된 이메일입니다.");
+            return new ResponseEntity<>(resultMap, HttpStatus.CONFLICT);
+        }
+
+        // 중복되지 않으면 회원 가입
+        else {
+            int result = memberService.signup(memberDto);
+
+            if (result > 0) {
+                return new ResponseEntity<>(result, HttpStatus.CREATED);
+            } else {
+                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+        }
+    }
+
     @PostMapping("/login")
     public ResponseEntity<Map<String, Object>> login(
             @RequestBody @Parameter(description = "로그인 시 필요한 회원정보(아이디, 비밀번호).", required = true) MemberDto memberDto) {
