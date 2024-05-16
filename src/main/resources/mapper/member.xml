@@ -10,34 +10,45 @@
         <result property="nickname" column="nickname" />
         <result property="age" column="age" />
         <result property="address" column="address" />
-        <result property="createAt" column="create_at" />
+        <result property="createdAt" column="created_at" />
         <result property="refreshToken" column="token" />
     </resultMap>
 
+    <!--  회원가입  -->
+    <insert id="signup" parameterType="memberDto">
+        insert into member (email, password, nickname, age, address)
+        values (#{email}, #{password}, #{nickname}, #{age}, #{address})
+    </insert>
+
+    <!--  로그인  -->
     <select id="login" parameterType="map" resultMap="basicMember">
         select email, nickname, token
         from member
         where email = #{email} and password = #{password}
     </select>
 
+    <!-- 유저 조회 -->
     <select id="userInfo" parameterType="string" resultMap="basicMember">
-        select email, nickname, age, address, create_at
+        select email, nickname, age, address, created_at
         from member
         where email = #{email}
     </select>
 
+    <!--  토큰 저장  -->
     <update id="saveRefreshToken" parameterType="map">
         update member
         set token = #{token}
         where email = #{email}
     </update>
 
+    <!--  refreshToken 얻기  -->
     <select id="getRefreshToken" parameterType="string" resultType="string">
         select token
         from member
         where email = #{email}
     </select>
 
+    <!--  토큰 지우기  -->
     <update id="deleteRefreshToken" parameterType="map">
         update member
         set token = #{token, jdbcType=VARCHAR}
