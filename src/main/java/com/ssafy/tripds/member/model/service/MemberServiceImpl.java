@@ -20,22 +20,27 @@ public class MemberServiceImpl implements MemberService{
     }
 
     @Override
-    public void saveRefreshToken(String userId, String refreshToken) throws Exception {
+    public MemberDto userInfo(String email) throws Exception {
+        return memberMapper.userInfo(email);
+    }
+
+    @Override
+    public void saveRefreshToken(String email, String refreshToken) throws Exception {
         Map<String, String> map = new HashMap<String, String>();
-        map.put("userId", userId);
+        map.put("email", email);
         map.put("token", refreshToken);
         memberMapper.saveRefreshToken(map);
     }
 
     @Override
-    public Object getRefreshToken(String userId) throws Exception {
-        return memberMapper.getRefreshToken(userId);
+    public Object getRefreshToken(String email) throws Exception {
+        return memberMapper.getRefreshToken(email);
     }
 
     @Override
-    public void deleRefreshToken(String userId) throws Exception {
+    public void deleRefreshToken(String email) throws Exception {
         Map<String, String> map = new HashMap<String, String>();
-        map.put("userId", userId);
+        map.put("email", email);
         map.put("token", null);
         memberMapper.deleteRefreshToken(map);
     }
