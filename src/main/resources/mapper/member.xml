@@ -10,6 +10,7 @@
         <result property="nickname" column="nickname" />
         <result property="age" column="age" />
         <result property="address" column="address" />
+        <result property="createAt" column="create_at" />
         <result property="refreshToken" column="token" />
     </resultMap>
 
@@ -20,7 +21,7 @@
     </select>
 
     <select id="userInfo" parameterType="string" resultMap="basicMember">
-        select email, nickname, age, address
+        select email, nickname, age, address, create_at
         from member
         where email = #{email}
     </select>
