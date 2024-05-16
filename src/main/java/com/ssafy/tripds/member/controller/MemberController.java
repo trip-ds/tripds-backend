@@ -4,14 +4,12 @@ import com.ssafy.tripds.member.model.dto.MemberDto;
 import com.ssafy.tripds.member.model.service.MemberService;
 import com.ssafy.tripds.util.JWTUtil;
 import io.swagger.v3.oas.annotations.Parameter;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -55,6 +53,34 @@ public class MemberController {
             log.debug("로그인 에러 발생 : {}", e);
             resultMap.put("message", e.getMessage());
             status = HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+        return new ResponseEntity<Map<String, Object>>(resultMap, status);
+    }
+
+    @GetMapping("/info/{email}")
+    public ResponseEntity<Map<String, Object>> getInfo(
+            @PathVariable("email") @Parameter(description = "인증할 회원의 아이디.", required = true) String email,
+            HttpServletRequest request) {
+//		logger.debug("userId : {} ", userId);
+        Map<String, Object> resultMap = new HashMap<>();
+        HttpStatus status = HttpStatus.ACCEPTED;
+        log.info("token : {}", request.getHeader("Authorization"));
+        if (jwtUtil.checkToken(request.getHeader("Authorization"))) {
+            log.info("사용 가능한 토큰!!!");
+            try {
+//				로그인 사용자 정보.
+                log.debug("email = {}" , email);
+                MemberDto memberDto = memberService.userInfo(email);
+                resultMap.put("userInfo", memberDto);
+                status = HttpStatus.OK;
+            } catch (Exception e) {
+                log.error("정보조회 실패 : {}", e);
+                resultMap.put("message", e.getMessage());
+                status = HttpStatus.INTERNAL_SERVER_ERROR;
+            }
+        } else {
+            log.error("사용 불가능 토큰!!!");
+            status = HttpStatus.UNAUTHORIZED;
         }
         return new ResponseEntity<Map<String, Object>>(resultMap, status);
     }
