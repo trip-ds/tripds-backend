@@ -8,6 +8,7 @@ import java.util.Map;
 
 @Mapper
 public interface MemberMapper {
+    int signup(MemberDto memberDto) throws SQLException;
     MemberDto login(MemberDto memberDto) throws SQLException;
     MemberDto userInfo(String email) throws SQLException;
     void saveRefreshToken(Map<String, String> map) throws SQLException;
