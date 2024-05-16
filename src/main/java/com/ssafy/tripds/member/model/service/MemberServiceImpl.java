@@ -15,6 +15,11 @@ public class MemberServiceImpl implements MemberService{
     private final MemberMapper memberMapper;
 
     @Override
+    public int signup(MemberDto memberDto) throws Exception {
+        return memberMapper.signup(memberDto);
+    }
+
+    @Override
     public MemberDto login(MemberDto memberDto) throws Exception {
         return memberMapper.login(memberDto);
     }
