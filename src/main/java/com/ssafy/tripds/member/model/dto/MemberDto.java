@@ -1,4 +1,4 @@
-package com.ssafy.tripds.member.dto;
+package com.ssafy.tripds.member.model.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
