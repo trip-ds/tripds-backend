@@ -14,8 +14,8 @@
     </resultMap>
 
     <select id="login" parameterType="map" resultMap="basicMember">
-        select user_id, user_name, token
+        select email, nickname, token
         from member
-        where user_id = #{userId} and user_password = #{userPwd}
+        where email = #{email} and password = #{password}
     </select>
 </mapper>
