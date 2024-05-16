@@ -19,6 +19,12 @@
         where email = #{email} and password = #{password}
     </select>
 
+    <select id="userInfo" parameterType="string" resultMap="basicMember">
+        select email, nickname, age, address
+        from member
+        where email = #{email}
+    </select>
+
     <update id="saveRefreshToken" parameterType="map">
         update member
         set token = #{token}
