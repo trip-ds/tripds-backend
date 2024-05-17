@@ -30,6 +30,11 @@ public class MemberServiceImpl implements MemberService{
     }
 
     @Override
+    public int updateMember(MemberDto memberDto) throws Exception {
+        return memberMapper.updateMember(memberDto);
+    }
+
+    @Override
     public void saveRefreshToken(String email, String refreshToken) throws Exception {
         Map<String, String> map = new HashMap<String, String>();
         map.put("email", email);
