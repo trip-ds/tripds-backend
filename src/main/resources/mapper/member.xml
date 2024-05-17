@@ -34,6 +34,26 @@
         where email = #{email}
     </select>
 
+    <!-- 유저 정보 수정 -->
+    <update id="updateMember" parameterType="memberDto">
+        update member
+        <set>
+            <if test="password != null and password != ''">
+                password = #{password},
+            </if>
+            <if test="nickname != null and nickname != ''">
+                nickname = #{nickname},
+            </if>
+            <if test="age != null">
+                age = #{age},
+            </if>
+            <if test="address != null and address != ''">
+                address = #{address},
+            </if>
+        </set>
+        where email = #{email}
+    </update>
+
     <!--  토큰 저장  -->
     <update id="saveRefreshToken" parameterType="map">
         update member
