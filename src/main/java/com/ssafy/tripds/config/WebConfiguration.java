@@ -1,23 +1,18 @@
 package com.ssafy.tripds.config;
 
 import com.ssafy.tripds.interceptor.JWTInterceptor;
+import com.ssafy.tripds.util.JWTUtil;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.config.annotation.*;
 
 @Configuration
 @EnableWebMvc
+@RequiredArgsConstructor
 public class WebConfiguration implements WebMvcConfigurer {
-	
-	private JWTInterceptor jwtInterceptor;
 
-	public WebConfiguration(JWTInterceptor jwtInterceptor) {
-		super();
-		this.jwtInterceptor = jwtInterceptor;
-	}
+	private final JWTUtil jwtUtil;
 
 	@Override
 	public void addCorsMappings(CorsRegistry registry) {
@@ -36,4 +31,10 @@ public class WebConfiguration implements WebMvcConfigurer {
 		registry.addResourceHandler("/*.html**").addResourceLocations("classpath:/static/");
     }
 
+	@Override
+	public void addInterceptors(InterceptorRegistry registry) {
+		registry.addInterceptor(new JWTInterceptor(jwtUtil))
+				.addPathPatterns("/api/**")
+				.excludePathPatterns("/api/user/login", "/api/user/signup");
+	}
 }
