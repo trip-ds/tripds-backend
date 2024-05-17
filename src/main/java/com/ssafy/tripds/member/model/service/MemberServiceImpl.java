@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -20,6 +21,7 @@ public class MemberServiceImpl implements MemberService{
     private final JWTUtil jwtUtil;
     private final MemberMapper memberMapper;
 
+    @Transactional
     @Override
     public int signup(MemberDto memberDto) {
         try {
@@ -38,6 +40,7 @@ public class MemberServiceImpl implements MemberService{
         }
     }
 
+    @Transactional
     @Override
     public Map<String, Object> login(MemberDto memberDto) {
         Map<String, Object> resultMap = new HashMap<String, Object>();
@@ -68,6 +71,7 @@ public class MemberServiceImpl implements MemberService{
         return resultMap;
     }
 
+    @Transactional
     @Override
     public MemberDto userInfo(String email) {
         try {
@@ -88,6 +92,18 @@ public class MemberServiceImpl implements MemberService{
         }
     }
 
+    @Transactional
+    @Override
+    public int deleteMember(String email) {
+        try {
+            return memberMapper.deleteMember(email);
+        } catch (SQLException e) {
+            log.error("회원 정보 삭제 실패 : {}", e);
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Transactional
     @Override
     public void saveRefreshToken(String email, String refreshToken) throws Exception {
         Map<String, String> map = new HashMap<String, String>();
@@ -96,11 +112,13 @@ public class MemberServiceImpl implements MemberService{
         memberMapper.saveRefreshToken(map);
     }
 
+    @Transactional
     @Override
     public Object getRefreshToken(String email) throws Exception {
         return memberMapper.getRefreshToken(email);
     }
 
+    @Transactional
     @Override
     public void deleRefreshToken(String email) throws Exception {
         Map<String, String> map = new HashMap<String, String>();
