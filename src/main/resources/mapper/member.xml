@@ -54,6 +54,12 @@
         where email = #{email}
     </update>
 
+    <!-- 계정 삭제 -->
+    <delete id="deleteMember" parameterType="string">
+        delete from member
+        where email = #{email}
+    </delete>
+
     <!--  토큰 저장  -->
     <update id="saveRefreshToken" parameterType="map">
         update member
