@@ -110,4 +110,37 @@ public class MemberController {
         }
         return new ResponseEntity<Map<String, Object>>(resultMap, status);
     }
+
+    @PutMapping("/update")
+    public ResponseEntity<Map<String, Object>> updateUser(
+            @RequestBody @Parameter(description = "수정할 회원 정보", required = true) MemberDto memberDto,
+            HttpServletRequest request) {
+        Map<String, Object> resultMap = new HashMap<>();
+        HttpStatus status = HttpStatus.ACCEPTED;
+
+        if (jwtUtil.checkToken(request.getHeader("Authorization"))) {
+            log.info("사용 가능한 토큰!!!");
+            try {
+                int result = memberService.updateMember(memberDto);
+
+                if (result > 0) {
+                    resultMap.put("message", "회원 정보 수정 성공");
+                    status = HttpStatus.OK;
+                } else {
+                    resultMap.put("message", "회원 정보 수정 실패");
+                    status = HttpStatus.INTERNAL_SERVER_ERROR;
+                }
+            } catch (Exception e) {
+                log.error("회원 정보 수정 실패 : {}", e);
+                resultMap.put("message", e.getMessage());
+                status = HttpStatus.INTERNAL_SERVER_ERROR;
+            }
+        } else {
+            log.error("사용 불가능 토큰!!!");
+            resultMap.put("message", "토큰이 유효하지 않습니다.");
+            status = HttpStatus.UNAUTHORIZED;
+        }
+
+        return new ResponseEntity<Map<String, Object>>(resultMap, status);
+    }
 }
