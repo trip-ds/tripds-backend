@@ -58,4 +58,13 @@ public class MemberController {
 
         return new ResponseEntity<>(updateMember, HttpStatus.OK);
     }
+
+    @DeleteMapping("/delete/{email}")
+    public ResponseEntity<?> deleteUser(
+            @PathVariable("email") @Parameter(description = "인증할 회원의 아이디.", required = true) String email) {
+
+        int updateMember = memberService.deleteMember(email);
+
+        return new ResponseEntity<>(updateMember, HttpStatus.OK);
+    }
 }
