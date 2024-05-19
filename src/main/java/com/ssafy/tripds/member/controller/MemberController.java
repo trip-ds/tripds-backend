@@ -24,7 +24,7 @@ public class MemberController {
     private final JWTUtil jwtUtil;
 
     @PostMapping("/signup")
-    public ResponseEntity<?> signup(MemberDto memberDto){
+    public ResponseEntity<?> signup(@RequestBody MemberDto memberDto){
         log.debug("sign up user = {}", memberDto);
 
         int result = memberService.signup(memberDto);
