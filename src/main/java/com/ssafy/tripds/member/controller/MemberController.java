@@ -3,6 +3,7 @@ package com.ssafy.tripds.member.controller;
 import com.ssafy.tripds.member.model.dto.MemberDto;
 import com.ssafy.tripds.member.model.service.MemberService;
 import com.ssafy.tripds.util.JWTUtil;
+import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -39,6 +40,22 @@ public class MemberController {
         HttpStatus status = (HttpStatus) login.get("status");
 
         return new ResponseEntity<>(login, status);
+    }
+
+    @GetMapping("/logout/{email}")
+    @Hidden
+    public ResponseEntity<?> removeToken(@PathVariable ("email") @Parameter(description = "로그아웃 할 회원의 아이디.", required = true) String email) {
+        Map<String, Object> resultMap = new HashMap<>();
+        HttpStatus status = HttpStatus.ACCEPTED;
+        try {
+            memberService.deleRefreshToken(email);
+            status = HttpStatus.OK;
+        } catch (Exception e) {
+            log.error("로그아웃 실패 : {}", e);
+            resultMap.put("message", e.getMessage());
+            status = HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+        return new ResponseEntity<Map<String, Object>>(resultMap, status);
     }
 
     @GetMapping("/info/{email}")
