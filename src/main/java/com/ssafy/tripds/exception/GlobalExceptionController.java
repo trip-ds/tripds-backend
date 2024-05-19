@@ -14,10 +14,16 @@ public class GlobalExceptionController {
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<Map<String, Object>> handleRuntimeException(RuntimeException ex) {
         Map<String, Object> errorResponse = new HashMap<>();
-        errorResponse.put("message", ex.getMessage());
-        errorResponse.put("status", HttpStatus.INTERNAL_SERVER_ERROR);
 
-        return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+        if (ex.getCause() instanceof IllegalStateException) {
+            errorResponse.put("message", ex.getCause().getMessage());
+            errorResponse.put("status", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+        } else {
+            errorResponse.put("message", ex.getMessage());
+            errorResponse.put("status", HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @ExceptionHandler(UnAuthorizedException.class)
