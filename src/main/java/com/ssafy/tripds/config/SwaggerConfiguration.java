@@ -46,4 +46,8 @@ public class SwaggerConfiguration {
 	public GroupedOpenApi mapApi() {
 		return GroupedOpenApi.builder().group("ssafy-map").pathsToMatch("/map/**").build();
 	}
+
+	@Bean GroupedOpenApi lightApi(){
+		return GroupedOpenApi.builder().group("street-light").pathsToMatch("/api/light/**").build();
+	}
 }
