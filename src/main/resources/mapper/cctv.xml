@@ -2,6 +2,22 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.ssafy.tripds.member.model.mapper.MemberMapper">
+<mapper namespace="com.ssafy.tripds.cctv.model.mapper.CctvMapper">
+    <resultMap id="cctvResultMap" type="CctvDto">
+        <id column="id" property="id" />
+        <result column="district" property="district" />
+        <result column="adress" property="adress" />
+        <result column="latitude" property="latitude" />
+        <result column="longitude" property="longitude" />
+        <result column="cctv_count" property="cctvCount" />
+    </resultMap>
 
+    <select id="getNearbyCctv" resultMap="cctvResultMap" parameterType="CoordinateDto">
+        SELECT id, district, adress, latitude, longitude, cctv_count
+        FROM `cctv_location`
+        WHERE ST_Distance_Sphere(
+                      ST_GeomFromText(CONCAT('POINT(', `longitude`, ' ', `latitude`, ')')),
+                      ST_GeomFromText(CONCAT('POINT(', #{longitude}, ' ', #{latitude}, ')'))
+              ) &lt;= #{distance}
+    </select>
 </mapper>
