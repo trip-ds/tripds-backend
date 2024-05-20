@@ -3,6 +3,7 @@ package com.ssafy.tripds.member.controller;
 import com.ssafy.tripds.member.model.dto.MemberDto;
 import com.ssafy.tripds.member.model.service.MemberService;
 import com.ssafy.tripds.util.JWTUtil;
+import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +24,7 @@ public class MemberController {
     private final JWTUtil jwtUtil;
 
     @PostMapping("/signup")
-    public ResponseEntity<?> signup(MemberDto memberDto){
+    public ResponseEntity<?> signup(@RequestBody MemberDto memberDto){
         log.debug("sign up user = {}", memberDto);
 
         int result = memberService.signup(memberDto);
@@ -39,6 +40,22 @@ public class MemberController {
         HttpStatus status = (HttpStatus) login.get("status");
 
         return new ResponseEntity<>(login, status);
+    }
+
+    @GetMapping("/logout/{email}")
+    @Hidden
+    public ResponseEntity<?> removeToken(@PathVariable ("email") @Parameter(description = "로그아웃 할 회원의 아이디.", required = true) String email) {
+        Map<String, Object> resultMap = new HashMap<>();
+        HttpStatus status = HttpStatus.ACCEPTED;
+        try {
+            memberService.deleRefreshToken(email);
+            status = HttpStatus.OK;
+        } catch (Exception e) {
+            log.error("로그아웃 실패 : {}", e);
+            resultMap.put("message", e.getMessage());
+            status = HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+        return new ResponseEntity<Map<String, Object>>(resultMap, status);
     }
 
     @GetMapping("/info/{email}")
@@ -66,5 +83,27 @@ public class MemberController {
         int updateMember = memberService.deleteMember(email);
 
         return new ResponseEntity<>(updateMember, HttpStatus.OK);
+    }
+
+    @PostMapping("/refresh")
+    public ResponseEntity<?> refreshToken(@RequestBody MemberDto memberDto, HttpServletRequest request)
+            throws Exception {
+        Map<String, Object> resultMap = new HashMap<>();
+        HttpStatus status = HttpStatus.ACCEPTED;
+        String token = request.getHeader("refreshToken");
+        log.debug("token : {}, memberDto : {}", token, memberDto);
+        if (jwtUtil.checkToken(token)) {
+            if (token.equals(memberService.getRefreshToken(memberDto.getEmail()))) {
+                String accessToken = jwtUtil.createAccessToken(memberDto.getEmail());
+                log.debug("token : {}", accessToken);
+                log.debug("정상적으로 access token 재발급!!!");
+                resultMap.put("access-token", accessToken);
+                status = HttpStatus.CREATED;
+            }
+        } else {
+            log.debug("refresh token 도 사용 불가!!!!!!!");
+            status = HttpStatus.UNAUTHORIZED;
+        }
+        return new ResponseEntity<Map<String, Object>>(resultMap, status);
     }
 }
