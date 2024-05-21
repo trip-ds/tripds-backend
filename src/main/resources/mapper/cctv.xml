@@ -12,7 +12,7 @@
         <result column="cctv_count" property="cctvCount" />
     </resultMap>
 
-    <select id="getNearbyCctv" resultMap="cctvResultMap" parameterType="CoordinateDto">
+    <select id="getNearbyCctv" resultMap="cctvResultMap" parameterType="CctvCoordinateDto">
         SELECT id, district, address, latitude, longitude, cctv_count
         FROM `cctv_location`
         WHERE ST_Distance_Sphere(

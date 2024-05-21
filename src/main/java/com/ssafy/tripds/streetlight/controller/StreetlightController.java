@@ -1,6 +1,6 @@
 package com.ssafy.tripds.streetlight.controller;
 
-import com.ssafy.tripds.streetlight.model.dto.CoordinateDto;
+import com.ssafy.tripds.streetlight.model.dto.StreetlightCoordinateDto;
 import com.ssafy.tripds.streetlight.model.dto.StreetlightDto;
 import com.ssafy.tripds.streetlight.model.dto.StreetlightSearchDto;
 import com.ssafy.tripds.streetlight.model.service.StreetlightService;
@@ -29,8 +29,8 @@ public class StreetlightController {
             @RequestParam("longitude") double longitude,
             @RequestParam("radius") long radius) {
 
-        CoordinateDto coordinateDto = new CoordinateDto(latitude, longitude, radius);
-        List<StreetlightDto> streetlightDto = streetlightService.getNearbyStreetLights(coordinateDto);
+        StreetlightCoordinateDto streetlightCoordinateDto = new StreetlightCoordinateDto(latitude, longitude, radius);
+        List<StreetlightDto> streetlightDto = streetlightService.getNearbyStreetLights(streetlightCoordinateDto);
 
         return new ResponseEntity<>(streetlightDto, HttpStatus.OK);
     }

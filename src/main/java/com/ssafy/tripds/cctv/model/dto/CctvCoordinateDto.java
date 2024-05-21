@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CoordinateDto {
+public class CctvCoordinateDto {
     private double latitude;
     private double longitude;
     private double distance;

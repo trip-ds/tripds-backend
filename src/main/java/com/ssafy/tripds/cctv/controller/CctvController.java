@@ -2,7 +2,7 @@ package com.ssafy.tripds.cctv.controller;
 
 import com.ssafy.tripds.cctv.model.dto.CctvDto;
 import com.ssafy.tripds.cctv.model.dto.CctvSearchDto;
-import com.ssafy.tripds.cctv.model.dto.CoordinateDto;
+import com.ssafy.tripds.cctv.model.dto.CctvCoordinateDto;
 import com.ssafy.tripds.cctv.model.service.CctvService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -27,8 +27,8 @@ public class CctvController {
             @RequestParam("longitude") double longitude,
             @RequestParam("distance") double distance) {
 
-        CoordinateDto coordinateDto = new CoordinateDto(latitude, longitude, distance);
-        List<CctvDto> cctvDtoList = cctvService.getNearbyCctv(coordinateDto);
+        CctvCoordinateDto cctvCoordinateDto = new CctvCoordinateDto(latitude, longitude, distance);
+        List<CctvDto> cctvDtoList = cctvService.getNearbyCctv(cctvCoordinateDto);
 
         return new ResponseEntity<>(cctvDtoList, HttpStatus.OK);
     }

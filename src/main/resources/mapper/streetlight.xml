@@ -9,7 +9,7 @@
         <result column="y_coordinate" property="yCoordinate"/>
     </resultMap>
 
-    <select id="getNearbyStreetLights" parameterType="coordinateDto" resultMap="streetlightResultMap">
+    <select id="getNearbyStreetLights" parameterType="streetlightCoordinateDto" resultMap="streetlightResultMap">
         SELECT manager_id, x_coordinate, y_coordinate
         FROM street_light
         WHERE ST_Distance_Sphere(
