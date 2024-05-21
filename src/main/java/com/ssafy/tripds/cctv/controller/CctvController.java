@@ -32,7 +32,7 @@ public class CctvController {
 
         return new ResponseEntity<>(cctvDtoList, HttpStatus.OK);
     }
-
+  
     @GetMapping("/map")
     public ResponseEntity<?> getCctvFromMap(
             @RequestParam("swLat") double swLat,
