@@ -1,6 +1,7 @@
 package com.ssafy.tripds.cctv.model.service;
 
 import com.ssafy.tripds.cctv.model.dto.CctvDto;
+import com.ssafy.tripds.cctv.model.dto.CctvSearchDto;
 import com.ssafy.tripds.cctv.model.dto.CoordinateDto;
 import com.ssafy.tripds.cctv.model.mapper.CctvMapper;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +24,15 @@ public class CctvServiceImpl implements CctvService {
             return cctvMapper.getNearbyCctv(coordinateDto);
         } catch (SQLException e) {
             log.error(e.getMessage());
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public List<CctvDto> getCctvFromMap(CctvSearchDto cctvSearchDto) {
+        try{
+            return cctvMapper.getCctvFromMap(cctvSearchDto);
+        }catch (Exception e){
             throw new RuntimeException(e);
         }
     }

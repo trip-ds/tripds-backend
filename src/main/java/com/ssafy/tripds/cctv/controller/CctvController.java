@@ -1,6 +1,7 @@
 package com.ssafy.tripds.cctv.controller;
 
 import com.ssafy.tripds.cctv.model.dto.CctvDto;
+import com.ssafy.tripds.cctv.model.dto.CctvSearchDto;
 import com.ssafy.tripds.cctv.model.dto.CoordinateDto;
 import com.ssafy.tripds.cctv.model.service.CctvService;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +29,19 @@ public class CctvController {
 
         CoordinateDto coordinateDto = new CoordinateDto(latitude, longitude, distance);
         List<CctvDto> cctvDtoList = cctvService.getNearbyCctv(coordinateDto);
+
+        return new ResponseEntity<>(cctvDtoList, HttpStatus.OK);
+    }
+  
+    @GetMapping("/map")
+    public ResponseEntity<?> getCctvFromMap(
+            @RequestParam("swLat") double swLat,
+            @RequestParam("swLng") double swLng,
+            @RequestParam("neLat") double neLat,
+            @RequestParam("neLng") double neLng) {
+
+        CctvSearchDto cctvSearchDto = new CctvSearchDto(swLat, swLng, neLat, neLng);
+        List<CctvDto> cctvDtoList = cctvService.getCctvFromMap(cctvSearchDto);
 
         return new ResponseEntity<>(cctvDtoList, HttpStatus.OK);
     }
