@@ -36,6 +36,7 @@ public class WebConfiguration implements WebMvcConfigurer {
 		registry.addInterceptor(new JWTInterceptor(jwtUtil))
 				.addPathPatterns("/api/**")
 				.excludePathPatterns("/api/user/login", "/api/user/signup")
+				.excludePathPatterns("/api/cctv/**", "/api/light/**")
 				.excludePathPatterns(String.valueOf(HttpMethod.OPTIONS), "/**");
 	}
 }
