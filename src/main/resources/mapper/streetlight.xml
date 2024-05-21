@@ -22,6 +22,7 @@
         SELECT manager_id, x_coordinate, y_coordinate
         FROM street_light
         WHERE x_coordinate BETWEEN #{swLat} AND #{neLat}
-          AND y_coordinate BETWEEN #{swLng} AND #{neLng};
+          AND y_coordinate BETWEEN #{swLng} AND #{neLng}
+        order by rand() limit 10;
     </select>
 </mapper>
