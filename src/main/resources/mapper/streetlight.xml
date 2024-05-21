@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssafy.tripds.streetlight.model.mapper.StreetlightMapper">
+    <resultMap id="streetlightResultMap" type="streetlightDto">
+        <id column="manager_id" property="managerId"/>
+        <result column="x_coordinate" property="xCoordinate"/>
+        <result column="y_coordinate" property="yCoordinate"/>
+    </resultMap>
+
+    <select id="getNearbyStreetLights" parameterType="coordinateDto" resultMap="streetlightResultMap">
+        SELECT manager_id, x_coordinate, y_coordinate
+        FROM street_light
+        WHERE ST_Distance_Sphere(
+                      ST_GeomFromText(CONCAT('POINT(', `y_coordinate`, ' ', `x_coordinate`, ')')),
+                      ST_GeomFromText(CONCAT('POINT(', #{longitude}, ' ', #{latitude}, ')'))
+              ) &lt;= #{radius}
+    </select>
+
+    <select id="getStreetlightFromMap" parameterType="StreetlightSearchDto" resultMap="streetlightResultMap">
+        SELECT manager_id, x_coordinate, y_coordinate
+        FROM street_light
+        WHERE x_coordinate BETWEEN #{swLat} AND #{neLat}
+          AND y_coordinate BETWEEN #{swLng} AND #{neLng}
+        order by rand() limit 10;
+    </select>
+</mapper>
