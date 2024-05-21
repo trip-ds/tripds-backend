@@ -6,7 +6,7 @@ import lombok.Data;
 public class CctvDto {
     private Long id;
     private String district;
-    private String adress;
+    private String address;
     private Double latitude;
     private Double longitude;
     private Integer cctvCount;

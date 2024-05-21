@@ -6,14 +6,14 @@
     <resultMap id="cctvResultMap" type="CctvDto">
         <id column="id" property="id" />
         <result column="district" property="district" />
-        <result column="adress" property="adress" />
+        <result column="address" property="address" />
         <result column="latitude" property="latitude" />
         <result column="longitude" property="longitude" />
         <result column="cctv_count" property="cctvCount" />
     </resultMap>
 
     <select id="getNearbyCctv" resultMap="cctvResultMap" parameterType="CoordinateDto">
-        SELECT id, district, adress, latitude, longitude, cctv_count
+        SELECT id, district, address, latitude, longitude, cctv_count
         FROM `cctv_location`
         WHERE ST_Distance_Sphere(
                       ST_GeomFromText(CONCAT('POINT(', `longitude`, ' ', `latitude`, ')')),
