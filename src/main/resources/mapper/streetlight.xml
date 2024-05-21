@@ -7,14 +7,13 @@
         <id column="manager_id" property="managerId"/>
         <result column="x_coordinate" property="xCoordinate"/>
         <result column="y_coordinate" property="yCoordinate"/>
-        <result column="location" property="location"/>
     </resultMap>
 
     <select id="getNearbyStreetLights" parameterType="coordinateDto" resultMap="streetlightResultMap">
         SELECT manager_id, x_coordinate, y_coordinate
         FROM street_light
         WHERE ST_Distance_Sphere(
-                      location,
+                      ST_GeomFromText(CONCAT('POINT(', `y_coordinate`, ' ', `x_coordinate`, ')')),
                       ST_GeomFromText(CONCAT('POINT(', #{longitude}, ' ', #{latitude}, ')'))
               ) &lt;= #{radius}
     </select>
