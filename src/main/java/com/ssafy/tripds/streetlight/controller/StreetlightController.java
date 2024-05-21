@@ -2,6 +2,7 @@ package com.ssafy.tripds.streetlight.controller;
 
 import com.ssafy.tripds.streetlight.model.dto.CoordinateDto;
 import com.ssafy.tripds.streetlight.model.dto.StreetlightDto;
+import com.ssafy.tripds.streetlight.model.dto.StreetlightSearchDto;
 import com.ssafy.tripds.streetlight.model.service.StreetlightService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,5 +33,18 @@ public class StreetlightController {
         List<StreetlightDto> streetlightDto = streetlightService.getNearbyStreetLights(coordinateDto);
 
         return new ResponseEntity<>(streetlightDto, HttpStatus.OK);
+    }
+
+    @GetMapping("/map")
+    public ResponseEntity<?> getStreetlightFromMap(
+            @RequestParam("swLat") double swLat,
+            @RequestParam("swLng") double swLng,
+            @RequestParam("neLat") double neLat,
+            @RequestParam("neLng") double neLng) {
+
+        StreetlightSearchDto streetlightSearchDto = new StreetlightSearchDto(swLat, swLng, neLat, neLng);
+        List<StreetlightDto> streetlightDtoList = streetlightService.getStreetlightFromMap(streetlightSearchDto);
+
+        return new ResponseEntity<>(streetlightDtoList, HttpStatus.OK);
     }
 }
