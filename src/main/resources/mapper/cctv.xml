@@ -20,4 +20,12 @@
                       ST_GeomFromText(CONCAT('POINT(', #{longitude}, ' ', #{latitude}, ')'))
               ) &lt;= #{distance}
     </select>
+
+    <select id="getCctvFromMap" resultMap="cctvResultMap" parameterType="CctvSearchDto">
+        SELECT id, district, address, latitude, longitude, cctv_count
+        FROM cctv_location
+        WHERE latitude BETWEEN #{swLat} AND #{neLat}
+          AND longitude BETWEEN #{swLng} AND #{neLng}
+        order by rand() limit 30;
+    </select>
 </mapper>
