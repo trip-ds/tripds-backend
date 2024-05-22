@@ -18,7 +18,20 @@ public class EstateServiceImpl implements EstateService {
 
     private final EstateMapper estateMapper;
 
-    /////// 관심부동산 ///////
+    // 부동산 (공통) //
+    @Transactional
+    @Override
+    public List<EstateDto> getEstateInfoByRegisterNumbers(List<String> registerNumberList) {
+        try{
+            return estateMapper.getEstateInfoByRegisterNumbers(registerNumberList);
+        }
+        catch (Exception e){
+            log.error("exception = {}" ,e);
+            throw new RuntimeException(e);
+        }
+    }
+
+    // 관심부동산 //
     @Transactional
     @Override
     public int insertEstateInterest(EstateInterestDto estateInterestDto) {
@@ -43,11 +56,12 @@ public class EstateServiceImpl implements EstateService {
         }
     }
 
+    // 부동산 플래너 //
     @Transactional
     @Override
-    public List<EstateDto> getEstateInfoByRegisterNumbers(List<String> registerNumberList) {
+    public int insertEstatePlanner(EstatePlannerDto estatePlannerDto) {
         try{
-            return estateMapper.getEstateInfoByRegisterNumbers(registerNumberList);
+            return estateMapper.insertEstatePlanner(estatePlannerDto);
         }
         catch (Exception e){
             log.error("exception = {}" ,e);
@@ -55,12 +69,10 @@ public class EstateServiceImpl implements EstateService {
         }
     }
 
-    /////// 부동산 플래너 ///////
-    @Transactional
     @Override
-    public int insertEstatePlanner(EstatePlannerDto estatePlannerDto) {
+    public List<String> selectEstatePlannerByMemberId(Long memberId) {
         try{
-            return estateMapper.insertEstatePlanner(estatePlannerDto);
+            return estateMapper.selectEstatePlannerByMemberId(memberId);
         }
         catch (Exception e){
             log.error("exception = {}" ,e);
