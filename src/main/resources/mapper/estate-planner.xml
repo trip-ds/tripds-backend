@@ -56,4 +56,14 @@
         WHERE member_id = #{memberId}
     </select>
 
+
+    <!-- register_number 리스트를 파라미터로 받아 관심부동산 정보 조회 -->
+    <select id="getEstateInfoByRegisterNumbers" parameterType="list" resultMap="EstateMap">
+        SELECT *
+        FROM real_estate
+        WHERE register_number IN
+        <foreach item="registerNumber" collection="list" open="(" separator="," close=")">
+            #{registerNumber}
+        </foreach>
+    </select>
 </mapper>
