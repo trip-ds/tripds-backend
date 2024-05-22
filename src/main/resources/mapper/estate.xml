@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.ssafy.tripds.estateplanner.model.mapper.EstateMapper">
+<mapper namespace="com.ssafy.tripds.estate.model.mapper.EstateMapper">
     <resultMap id="EstateMap" type="EstateDto">
         <id property="registerNumber" column="register_number" />
         <result property="name" column="name" />
