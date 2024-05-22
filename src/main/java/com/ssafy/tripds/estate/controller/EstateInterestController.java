@@ -1,9 +1,9 @@
-package com.ssafy.tripds.estateplanner.controller;
+package com.ssafy.tripds.estate.controller;
 
-import com.ssafy.tripds.estateplanner.model.dto.EstateDto;
-import com.ssafy.tripds.estateplanner.model.dto.EstateInterestDto;
-import com.ssafy.tripds.estateplanner.model.dto.EstateInterestParamDto;
-import com.ssafy.tripds.estateplanner.model.service.EstateService;
+import com.ssafy.tripds.estate.model.dto.EstateDto;
+import com.ssafy.tripds.estate.model.dto.EstateInterestDto;
+import com.ssafy.tripds.estate.model.dto.EstateInterestParamDto;
+import com.ssafy.tripds.estate.model.service.EstateService;
 import com.ssafy.tripds.member.model.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

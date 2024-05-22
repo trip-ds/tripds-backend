@@ -1,4 +1,4 @@
-package com.ssafy.tripds.estateplanner.model.dto;
+package com.ssafy.tripds.estate.model.dto;
 
 import lombok.Data;
 
