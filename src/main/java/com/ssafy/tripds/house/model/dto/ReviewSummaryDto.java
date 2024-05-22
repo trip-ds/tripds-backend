@@ -8,6 +8,8 @@ public record ReviewSummaryDto(
         Double avgRating,
         Double avgTransportRating,
         Double avgComplexRating,
-        Double avgFacilityRating
+        Double avgFacilityRating,
+        Integer cnt
+
 ) {
 }

@@ -57,6 +57,7 @@
     <result column="avg_transport_rating" property="avgTransportRating" />
     <result column="avg_complex_rating" property="avgComplexRating" />
     <result column="avg_facility_rating" property="avgFacilityRating" />
+    <result column="cnt" property="cnt" />
   </resultMap>
 
   <resultMap id="reviewRMap" type="reviewType">
@@ -307,6 +308,7 @@
            select avg(transport_rating) as avg_transport_rating
                 , avg(complex_rating) as avg_complex_rating
                 , avg(facility_rating) as avg_facility_rating
+                , count(1) as cnt
            from review
            where id_road_name = #{road_name}
          ) a;
