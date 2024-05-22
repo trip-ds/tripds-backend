@@ -18,8 +18,9 @@ public interface HouseMapper {
     List<HouseDealSummaryDto> findOfficetelDealListSummary(Map params);
     HouseDealShortSummaryDto findOneRoomDealSummary(String roadName);
     HouseDealShortSummaryDto findOfficetelDealSummary(String roadName);
-    HouseDealDto findDealList(String roadName);
     HouseSummaryDto findSummary(String roadName);
+    List<HouseDealDto> findOneRoomDealList(String roadName);
+    List<HouseDealDto> findOfficetelDealList(String roadName);
     ReviewSummaryDto findReviewSummary(String roadName);
     ReviewDto findReviewList(String roadName);
     Object insertReview(ReviewWriteDto reviewWriteDto);

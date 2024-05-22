@@ -47,8 +47,10 @@ public class HouseController {
     }
 
     @GetMapping("/deal/list")
-    public ResponseEntity<?> getDealList(@RequestParam("roadName") String roadName) {
-        return new ResponseEntity<>(houseService.getDealList(roadName), HttpStatus.OK);
+    public ResponseEntity<?> getDealList(
+            @RequestParam("residenceType") String residenceType,
+            @RequestParam("roadName") String roadName) {
+        return new ResponseEntity<>(houseService.getDealList(residenceType, roadName), HttpStatus.OK);
     }
 
     @GetMapping("/review/summary")

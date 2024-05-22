@@ -19,7 +19,7 @@ public interface HouseService {
 
     HouseDealShortSummaryDto getDealSummary(String residenceType, String roadName);
 
-    HouseDealDto getDealList(String roadName);
+    List<HouseDealDto> getDealList(String residenceType, String roadName);
 
     ReviewSummaryDto getReviewSummary(String roadName);
 

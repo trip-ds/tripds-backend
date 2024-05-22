@@ -49,8 +49,11 @@ public class HouseServiceImpl implements HouseService {
     }
 
     @Override
-    public HouseDealDto getDealList(String roadName) {
-        return houseMapper.findDealList(roadName);
+    public List<HouseDealDto> getDealList(String residenceType, String roadName) {
+        if (residenceType.equals("oneroom")) return houseMapper.findOneRoomDealList(roadName);
+        else if (residenceType.equals("officetel")) return houseMapper.findOfficetelDealList(roadName);
+
+        return null;
     }
 
     @Override

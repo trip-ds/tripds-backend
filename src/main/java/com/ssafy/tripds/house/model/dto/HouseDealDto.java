@@ -7,6 +7,7 @@ public record HouseDealDto(
 //        String roadName,
         String contractType,
         String name,
+        String contractDate,
         Double monthlyRent,
         Double deposit,
         Double price,
