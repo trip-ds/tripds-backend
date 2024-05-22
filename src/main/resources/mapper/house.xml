@@ -240,7 +240,7 @@
   </select>
 
   <select id="findReviewList" parameterType="string">
-    select CASE WHEN age >= 20 AND age < 30 THEN '20대' WHEN age >= 30 AND age < 40 THEN '30대' ELSE '기타' END AS age_category
+    select CASE WHEN age >= 20 AND age <![CDATA[<]]> 30 THEN '20대' WHEN age >= 30 AND age <![CDATA[<]]> 40 THEN '30대' ELSE '기타' END AS age_category
         , SUBSTRING_INDEX(m.email, '@', 1) as author_email_id
         , r.residence_period
         , r.transport_rating
