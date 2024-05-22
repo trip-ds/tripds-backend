@@ -4,6 +4,7 @@ import com.ssafy.tripds.house.model.dto.HouseDealDto;
 import com.ssafy.tripds.house.model.dto.HouseDealShortSummaryDto;
 import com.ssafy.tripds.house.model.dto.HouseDealSummaryDto;
 import com.ssafy.tripds.house.model.dto.HouseSummaryDto;
+import com.ssafy.tripds.house.model.dto.ReviewDto;
 import com.ssafy.tripds.house.model.dto.ReviewSummaryDto;
 import com.ssafy.tripds.house.model.mapper.HouseMapper;
 import lombok.RequiredArgsConstructor;
@@ -54,5 +55,10 @@ public class HouseServiceImpl implements HouseService {
     @Override
     public ReviewSummaryDto getReviewSummary(String roadName) {
         return houseMapper.findReviewSummary(roadName);
+    }
+
+    @Override
+    public ReviewDto getReviewList(String roadName) {
+        return houseMapper.findReviewList(roadName);
     }
 }

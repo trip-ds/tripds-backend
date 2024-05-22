@@ -53,4 +53,9 @@ public class HouseController {
     public ResponseEntity<?> getReviewSummary(@RequestParam("roadName") String roadName) {
         return new ResponseEntity<>(houseService.getReviewSummary(roadName), HttpStatus.OK);
     }
+
+    @GetMapping("/review/list")
+    public ResponseEntity<?> getReviewList(@RequestParam("roadName") String roadName) {
+        return new ResponseEntity<>(houseService.getReviewList(roadName), HttpStatus.OK);
+    }
 }

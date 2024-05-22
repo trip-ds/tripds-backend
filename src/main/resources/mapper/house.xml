@@ -58,6 +58,18 @@
     <result column="avg_facility_rating" property="avgFacilityRating" />
   </resultMap>
 
+  <resultMap id="reviewRMap" type="reviewType">
+    <!--    <result column="road_name" property="roadName" />-->
+    <result column="age_category" property="ageCategory" />
+    <result column="author_email_id" property="authorEmailId" />
+    <result column="residence_period" property="residencePeriod" />
+    <result column="transport_rating" property="transportRating" />
+    <result column="complex_rating" property="complexRating" />
+    <result column="facility_rating" property="facilityRating" />
+    <result column="content" property="content" />
+    <result column="create_date" property="createDate" />
+  </resultMap>
+
   <select id="findOneRoomDealListSummary" parameterType="map">
     SELECT info.*,
            AVG(oneroom.net_area) AS net_area,
@@ -225,5 +237,18 @@
            from review
            where id_road_name = ${road_name}
          ) a;
+  </select>
+
+  <select id="findReviewList" parameterType="string">
+    select CASE WHEN age >= 20 AND age < 30 THEN '20대' WHEN age >= 30 AND age < 40 THEN '30대' ELSE '기타' END AS age_category
+        , SUBSTRING_INDEX(m.email, '@', 1) as author_email_id
+        , r.residence_period
+        , r.transport_rating
+        , r.complex_rating
+        , r.facility_rating
+        , r.content
+        , DATE_FORMAT(r.create_date, '%Y.%m.%d') as create_date
+    from review r inner join member m on r.author_id = m.id
+    where r.id_road_name = ${road_name};
   </select>
 </mapper>
