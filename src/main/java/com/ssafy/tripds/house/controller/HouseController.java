@@ -1,11 +1,13 @@
 package com.ssafy.tripds.house.controller;
 
 import com.ssafy.tripds.house.model.dto.HouseDealSummaryDto;
+import com.ssafy.tripds.house.model.dto.ReviewWriteDto;
 import com.ssafy.tripds.house.model.service.HouseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -57,5 +59,12 @@ public class HouseController {
     @GetMapping("/review/list")
     public ResponseEntity<?> getReviewList(@RequestParam("roadName") String roadName) {
         return new ResponseEntity<>(houseService.getReviewList(roadName), HttpStatus.OK);
+    }
+
+    @PostMapping("/review")
+    public ResponseEntity<?> registerReview(ReviewWriteDto reviewWriteDto) {
+        houseService.registerReview(reviewWriteDto);
+
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 }

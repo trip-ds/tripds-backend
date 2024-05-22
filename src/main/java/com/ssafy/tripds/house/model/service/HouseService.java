@@ -6,6 +6,7 @@ import com.ssafy.tripds.house.model.dto.HouseDealSummaryDto;
 import com.ssafy.tripds.house.model.dto.HouseSummaryDto;
 import com.ssafy.tripds.house.model.dto.ReviewDto;
 import com.ssafy.tripds.house.model.dto.ReviewSummaryDto;
+import com.ssafy.tripds.house.model.dto.ReviewWriteDto;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,4 +24,6 @@ public interface HouseService {
     ReviewSummaryDto getReviewSummary(String roadName);
 
     ReviewDto getReviewList(String roadName);
+
+    Object registerReview(ReviewWriteDto reviewWriteDto);
 }

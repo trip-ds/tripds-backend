@@ -251,4 +251,16 @@
     from review r inner join member m on r.author_id = m.id
     where r.id_road_name = ${road_name};
   </select>
+
+  <insert id="insertReview" parameterType="reviewFormType">
+    insert into review(author_id, residence_period, transport_rating, complex_rating, facility_rating, content)
+    select id,
+           CONCAT(#{residencePeriodStart}, '-', #{residencePeriodEnd}),
+           #{transportRating},
+           #{complexRating},
+           #{facilityRating},
+           #{content}
+    from member
+    where email = #{authorEmail}
+  </insert>
 </mapper>

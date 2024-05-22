@@ -6,6 +6,7 @@ import com.ssafy.tripds.house.model.dto.HouseDealSummaryDto;
 import com.ssafy.tripds.house.model.dto.HouseSummaryDto;
 import com.ssafy.tripds.house.model.dto.ReviewDto;
 import com.ssafy.tripds.house.model.dto.ReviewSummaryDto;
+import com.ssafy.tripds.house.model.dto.ReviewWriteDto;
 import com.ssafy.tripds.house.model.mapper.HouseMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -60,5 +61,10 @@ public class HouseServiceImpl implements HouseService {
     @Override
     public ReviewDto getReviewList(String roadName) {
         return houseMapper.findReviewList(roadName);
+    }
+
+    @Override
+    public Object registerReview(ReviewWriteDto reviewWriteDto) {
+        return houseMapper.insertReview(reviewWriteDto);
     }
 }
