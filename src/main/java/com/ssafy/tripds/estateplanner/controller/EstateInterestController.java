@@ -1,5 +1,6 @@
 package com.ssafy.tripds.estateplanner.controller;
 
+import com.ssafy.tripds.estateplanner.model.dto.EstateDto;
 import com.ssafy.tripds.estateplanner.model.dto.EstateInterestDto;
 import com.ssafy.tripds.estateplanner.model.dto.EstateInterestParamDto;
 import com.ssafy.tripds.estateplanner.model.service.EstateService;
@@ -8,10 +9,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/estate/interest")
@@ -23,7 +23,7 @@ public class EstateInterestController {
     private final EstateService estateService;
 
     @PostMapping("/insert")
-    public ResponseEntity<?> insertInterest(@RequestBody EstateInterestParamDto estateInterestParamDto){
+    public ResponseEntity<?> insertEstateInterest(@RequestBody EstateInterestParamDto estateInterestParamDto){
         Long memberId = memberService.userInfo(estateInterestParamDto.getEmail()).getId();
         String registerNumber = estateInterestParamDto.getRegisterNumber();
 
@@ -37,5 +37,14 @@ public class EstateInterestController {
 
         int result = estateService.insertEstateInterest(estateInterestDto);
         return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @GetMapping("/info/{email}")
+    public ResponseEntity<?> getInterestEsateInfo(@PathVariable ("email") String email){
+        Long memberId = memberService.userInfo(email).getId();
+        List<String> registerNumberList = estateService.selectEstateInterestByMemberId(memberId);
+        List<EstateDto> estateDtoList = estateService.getEstateInfoByRegisterNumbers(registerNumberList);
+
+        return new ResponseEntity<>(estateDtoList, HttpStatus.OK);
     }
 }
