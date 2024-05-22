@@ -10,11 +10,14 @@ import java.util.List;
 
 @Mapper
 public interface EstateMapper {
-    // 관심 부동산
-    int insertEstateInterest(EstateInterestDto estateInterestDto) throws SQLException;
-    List<String> selectEstateInterestByMemberId(Long memberId) throws SQLException;
+    // 부동산 (공통) //
     List<EstateDto> getEstateInfoByRegisterNumbers(List<String> registerNumberList) throws SQLException;
 
-    // 부동산 플래너
+    // 관심 부동산 //
+    int insertEstateInterest(EstateInterestDto estateInterestDto) throws SQLException;
+    List<String> selectEstateInterestByMemberId(Long memberId) throws SQLException;
+
+    // 부동산 플래너 //
     int insertEstatePlanner(EstatePlannerDto estatePlannerDto) throws SQLException;
+    List<String> selectEstatePlannerByMemberId(Long memberId) throws SQLException;
 }
