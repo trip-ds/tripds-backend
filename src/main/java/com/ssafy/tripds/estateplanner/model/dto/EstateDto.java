@@ -5,7 +5,7 @@ import lombok.Data;
 import java.time.LocalDate;
 
 @Data
-public class PlannerEstate {
+public class EstateDto {
     private String registerNumber;
     private String name;
     private String roadName;
