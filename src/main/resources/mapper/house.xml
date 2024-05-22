@@ -176,7 +176,7 @@
                 , contract_amount as price
            from oneroom_sale
          ) oneroom
-    where info.road_name = #{road_name}
+    where oneroom.road_name = #{road_name}
     group by 1;
   </select>
 
