@@ -57,7 +57,7 @@
     </select>
 
 
-    <!-- register_number 리스트를 파라미터로 받아 관심부동산 정보 조회 -->
+    <!-- register_number 리스트를 파라미터로 받아 부동산 정보 조회 -->
     <select id="getEstateInfoByRegisterNumbers" parameterType="list" resultMap="EstateMap">
         SELECT *
         FROM real_estate
