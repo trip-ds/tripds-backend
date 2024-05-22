@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssafy.tripds.cctv.model.mapper.HouseMapper">
+  <resultMap id="houseDealSummaryRMap" type="houseDealSummaryType">
+    <result column="building_name" property="name" />
+    <result column="road_name" property="roadName" />
+    <result column="x_coordinate" property="xCoordinate" />
+    <result column="y_coordinate" property="yCoordinate" />
+    <result column="cnt" property="cnt" />
+    <result column="contract_type" property="contractType" />
+    <result column="avg_monthly_rent" property="avgMonthlyRent" />
+    <result column="avg_deposit" property="avgDeposit" />
+    <result column="avg_price" property="avgPrice" />
+    <result column="avg_net_area" property="avgNetArea" />
+  </resultMap>
+
+  <resultMap id="HouseDealShortSummaryRMap" type="houseDealSummaryShortType">
+    <result column="road_name" property="roadName" />
+    <result column="min_price" property="minPrice" />
+    <result column="max_price" property="maxPrice" />
+    <result column="min_deposit" property="minDeposit" />
+    <result column="max_deposit" property="maxDeposit" />
+    <result column="min_net_area" property="minNetArea" />
+    <result column="max_net_area" property="maxNetArea" />
+  </resultMap>
+
+  <resultMap id="houseSummaryRMap" type="houseSummaryType">
+    <result column="road_name" property="roadName" />
+    <result column="build_year" property="buildYear" />
+    <result column="height" property="height" />
+    <result column="households" property="households" />
+    <result column="building_area" property="buildingArea" />
+    <result column="floor_area" property="floorArea" />
+    <result column="site_area" property="siteArea" />
+    <result column="floors_min" property="floorsMin" />
+    <result column="floors_max" property="floorsMax" />
+    <result column="passenger_elevators" property="passengerElevatorCnt" />
+  </resultMap>
+
+  <resultMap id="houseDealRMap" type="houseDealType">
+<!--    <result column="road_name" property="roadName" />-->
+    <result column="contract_type" property="contractType" />
+    <result column="building_name" property="name" />
+    <result column="monthly_rent" property="monthlyRent" />
+    <result column="deposit" property="deposit" />
+    <result column="price" property="price" />
+    <result column="floor" property="floor" />
+    <result column="net_area" property="netArea" />
+  </resultMap>
+
+  <select id="findOneRoomDealListSummary" parameterType="map">
+    SELECT info.*,
+           AVG(oneroom.net_area) AS net_area,
+           CASE WHEN SUM(CASE WHEN oneroom.contract_type = '매매' THEN 1 ELSE 0 END) >= GREATEST(SUM(CASE WHEN oneroom.contract_type = '전세' THEN 1 ELSE 0 END),SUM(CASE WHEN oneroom.contract_type = '월세' THEN 1 ELSE 0 END)) THEN '매매'
+                WHEN SUM(CASE WHEN oneroom.contract_type = '전세' THEN 1 ELSE 0 END) >= GREATEST(SUM(CASE WHEN oneroom.contract_type = '매매' THEN 1 ELSE 0 END),SUM(CASE WHEN oneroom.contract_type = '월세' THEN 1 ELSE 0 END)) THEN '전세'
+                ELSE '월세' END AS contract_type,
+           AVG(CASE WHEN oneroom.contract_type = '월세' THEN oneroom.monthly_rent END) AS avg_monthly_rent,
+           AVG(CASE WHEN oneroom.contract_type IN ('전세', '월세') THEN oneroom.deposit END) AS avg_deposit,
+           AVG(CASE WHEN oneroom.contract_type = '매매' THEN oneroom.price END) AS avg_price,
+           count(1) as cnt
+    FROM (
+           SELECT
+             building_name,
+             CASE WHEN bu_bun > 0 THEN CONCAT(road_name, ' ', bon_bun, '-', bu_bun) ELSE CONCAT(road_name, ' ', bon_bun) END AS road_name,
+             x_coordinate,
+             y_coordinate
+           FROM houseinfo
+           WHERE x_coordinate BETWEEN #{leftLng} AND ${rightLng} AND y_coordinate BETWEEN ${bottomLat} AND ${topLat}
+         ) info
+           INNER JOIN (
+      SELECT
+        CONCAT(SUBSTRING_INDEX(si_gun_gu, ' ', 2), ' ', road_name) AS road_name,
+        net_area,
+        rent_type AS contract_type,
+        monthly_rent,
+        deposit,
+        '' AS price
+      FROM oneroom_rental
+      UNION
+      SELECT
+        CONCAT(SUBSTRING_INDEX(si_gun_gu, ' ', 2), ' ', road_name) AS road_name,
+        net_area,
+        '매매' AS contract_type,
+        '' AS monthly_rent,
+        '' AS deposit,
+        contract_amount AS price
+      FROM oneroom_sale
+    ) oneroom ON info.road_name = oneroom.road_name
+    GROUP BY 1, 2, 3, 4
+  </select>
+
+  <select id="findOfficetelDealListSummary" parameterType="map">
+    SELECT info.*,
+           AVG(officetel.net_area) AS net_area,
+           CASE WHEN SUM(CASE WHEN officetel.contract_type = '매매' THEN 1 ELSE 0 END) >= GREATEST(SUM(CASE WHEN officetel.contract_type = '전세' THEN 1 ELSE 0 END),SUM(CASE WHEN officetel.contract_type = '월세' THEN 1 ELSE 0 END)) THEN '매매'
+                WHEN SUM(CASE WHEN officetel.contract_type = '전세' THEN 1 ELSE 0 END) >= GREATEST(SUM(CASE WHEN officetel.contract_type = '매매' THEN 1 ELSE 0 END),SUM(CASE WHEN officetel.contract_type = '월세' THEN 1 ELSE 0 END)) THEN '전세'
+                ELSE '월세' END AS contract_type,
+           AVG(CASE WHEN officetel.contract_type = '월세' THEN officetel.monthly_rent END) AS avg_monthly_rent,
+           AVG(CASE WHEN officetel.contract_type IN ('전세', '월세') THEN officetel.deposit END) AS avg_deposit,
+           AVG(CASE WHEN officetel.contract_type = '매매' THEN officetel.price END) AS avg_price,
+           count(1) as cnt
+    FROM (
+           SELECT
+             building_name,
+             CASE WHEN bu_bun > 0 THEN CONCAT(road_name, ' ', bon_bun, '-', bu_bun) ELSE CONCAT(road_name, ' ', bon_bun) END AS road_name,
+             x_coordinate,
+             y_coordinate
+           FROM houseinfo
+           WHERE x_coordinate BETWEEN #{leftLng} AND ${rightLng} AND y_coordinate BETWEEN ${bottomLat} AND ${topLat}
+         ) info
+           INNER JOIN (
+      SELECT
+        CONCAT(SUBSTRING_INDEX(si_gun_gu, ' ', 2), ' ', road_name) AS road_name,
+        net_area,
+        rent_type AS contract_type,
+        monthly_rent,
+        deposit,
+        '' AS price
+      FROM officetel_rental
+      UNION
+      SELECT
+        CONCAT(SUBSTRING_INDEX(si_gun_gu, ' ', 2), ' ', road_name) AS road_name,
+        net_area,
+        '매매' AS contract_type,
+        '' AS monthly_rent,
+        '' AS deposit,
+        contract_amount AS price
+      FROM officetel_sale
+    ) officetel ON info.road_name = officetel.road_name
+    GROUP BY 1, 2, 3, 4
+  </select>
+
+  <select id="findOneRoomDealSummary" parameterType="string">
+    select oneroom.road_name
+         , min(oneroom.price) as min_price
+         , max(oneroom.price) as max_price
+         , min(oneroom.deposit) as min_deposit
+         , max(oneroom.deposit) as max_deposit
+         , min(oneroom.net_area) as min_net_area
+         , max(oneroom.net_area) as max_net_area
+    from (
+           select CONCAT(SUBSTRING_INDEX(si_gun_gu, ' ', 2), ' ', road_name) AS road_name
+                , net_area
+                , monthly_rent
+                , deposit
+                , 0 as price
+           from oneroom_rental
+           where rent_type = '전세'
+           union
+           select CONCAT(SUBSTRING_INDEX(si_gun_gu, ' ', 2), ' ', road_name) AS road_name
+                , net_area
+                , 0 as monthly_rent
+                , 0 as deposit
+                , contract_amount as price
+           from oneroom_sale
+         ) oneroom
+    where info.road_name = ${road_name}
+    group by 1;
+  </select>
+
+  <select id="findOfficetelDealSummary" parameterType="string">
+    select officetel.road_name
+         , min(officetel.price) as min_price
+         , max(officetel.price) as max_price
+         , min(officetel.deposit) as min_deposit
+         , max(officetel.deposit) as max_deposit
+         , min(officetel.net_area) as min_net_area
+         , max(officetel.net_area) as max_net_area
+    from (
+           select CONCAT(SUBSTRING_INDEX(si_gun_gu, ' ', 2), ' ', road_name) AS road_name
+                , net_area
+                , monthly_rent
+                , deposit
+                , 0 as price
+           from officetel_rental
+           where rent_type = '전세'
+           union
+           select CONCAT(SUBSTRING_INDEX(si_gun_gu, ' ', 2), ' ', road_name) AS road_name
+                , net_area
+                , 0 as monthly_rent
+                , 0 as deposit
+                , contract_amount as price
+           from officetel_sale
+         ) officetel
+    where info.road_name = ${road_name}
+    group by 1;
+  </select>
+
+  <select id="findSummary" parameterType="string">
+    select info.*
+    from (
+           select case when bu_bun > 0 then CONCAT(road_name, ' ', bon_bun, '-', bu_bun) else CONCAT(road_name, ' ', bon_bun) end AS road_name
+                , build_year
+                , height
+                , households
+                , building_area
+                , floor_area
+                , site_area
+                , floors_below as floors_min
+                , floors_above as floors_max
+                -- , concat(floors_above, '/', floors_below) as floors_min_max
+                , passenger_elevators
+           from houseinfo
+         ) info
+    where info.road_name = ${road_name}
+  </select>
+</mapper>
