@@ -1,7 +1,8 @@
-package com.ssafy.tripds.estateplanner.model.mapper;
+package com.ssafy.tripds.estate.model.mapper;
 
-import com.ssafy.tripds.estateplanner.model.dto.EstateDto;
-import com.ssafy.tripds.estateplanner.model.dto.EstateInterestDto;
+import com.ssafy.tripds.estate.model.dto.EstateDto;
+import com.ssafy.tripds.estate.model.dto.EstateInterestDto;
+import com.ssafy.tripds.estate.model.dto.EstatePlannerDto;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.sql.SQLException;
@@ -9,7 +10,11 @@ import java.util.List;
 
 @Mapper
 public interface EstateMapper {
+    // 관심 부동산
     int insertEstateInterest(EstateInterestDto estateInterestDto) throws SQLException;
     List<String> selectEstateInterestByMemberId(Long memberId) throws SQLException;
     List<EstateDto> getEstateInfoByRegisterNumbers(List<String> registerNumberList) throws SQLException;
+
+    // 부동산 플래너
+    int insertEstatePlanner(EstatePlannerDto estatePlannerDto) throws SQLException;
 }
