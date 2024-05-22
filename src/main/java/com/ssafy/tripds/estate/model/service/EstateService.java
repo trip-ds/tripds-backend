@@ -8,6 +8,7 @@ import java.util.List;
 
 public interface EstateService {
     // 부동산 (공통) //
+    EstateDto getEstateDetail(String registerNumber);
     int insertEstateInterest(EstateInterestDto estateInterestDto);
 
     // 관심 부동산 //
