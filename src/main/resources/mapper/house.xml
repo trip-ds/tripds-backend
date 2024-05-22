@@ -50,6 +50,14 @@
     <result column="net_area" property="netArea" />
   </resultMap>
 
+  <resultMap id="reviewSummaryRMap" type="reviewSummaryType">
+    <!--    <result column="road_name" property="roadName" />-->
+    <result column="avg_rating" property="avgRating" />
+    <result column="avg_transport_rating" property="avgTransportRating" />
+    <result column="avg_complex_rating" property="avgComplexRating" />
+    <result column="avg_facility_rating" property="avgFacilityRating" />
+  </resultMap>
+
   <select id="findOneRoomDealListSummary" parameterType="map">
     SELECT info.*,
            AVG(oneroom.net_area) AS net_area,
@@ -205,5 +213,17 @@
            from houseinfo
          ) info
     where info.road_name = ${road_name}
+  </select>
+
+  <select id="findReviewSummary" parameterType="string">
+    select (a.avg_transport_rating+a.avg_complex_rating+a.avg_facility_rating)/3 as avg_rating
+         , a.*
+    from (
+           select avg(transport_rating) as avg_transport_rating
+                , avg(complex_rating) as avg_complex_rating
+                , avg(facility_rating) as avg_facility_rating
+           from review
+           where id_road_name = ${road_name}
+         ) a;
   </select>
 </mapper>

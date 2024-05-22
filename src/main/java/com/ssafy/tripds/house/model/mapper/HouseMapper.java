@@ -4,6 +4,7 @@ import com.ssafy.tripds.house.model.dto.HouseDealDto;
 import com.ssafy.tripds.house.model.dto.HouseDealShortSummaryDto;
 import com.ssafy.tripds.house.model.dto.HouseDealSummaryDto;
 import com.ssafy.tripds.house.model.dto.HouseSummaryDto;
+import com.ssafy.tripds.house.model.dto.ReviewSummaryDto;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -17,4 +18,5 @@ public interface HouseMapper {
     HouseDealShortSummaryDto findOfficetelDealSummary(String roadName);
     HouseDealDto findDealList(String roadName);
     HouseSummaryDto findSummary(String roadName);
+    ReviewSummaryDto findReviewSummary(String roadName);
 }
