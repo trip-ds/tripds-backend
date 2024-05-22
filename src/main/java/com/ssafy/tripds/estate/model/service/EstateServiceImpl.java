@@ -19,6 +19,17 @@ public class EstateServiceImpl implements EstateService {
     private final EstateMapper estateMapper;
 
     // 부동산 (공통) //
+    @Override
+    public EstateDto getEstateDetail(String registerNumber) {
+        try{
+            return estateMapper.getEstateDetail(registerNumber);
+        }
+        catch (Exception e){
+            log.error("exception = {}" ,e);
+            throw new RuntimeException(e);
+        }
+    }
+
     @Transactional
     @Override
     public List<EstateDto> getEstateInfoByRegisterNumbers(List<String> registerNumberList) {
