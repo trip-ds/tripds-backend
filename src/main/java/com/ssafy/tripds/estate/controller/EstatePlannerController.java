@@ -1,5 +1,6 @@
 package com.ssafy.tripds.estate.controller;
 
+import com.ssafy.tripds.estate.model.dto.EstateDto;
 import com.ssafy.tripds.estate.model.dto.EstatePlannerDto;
 import com.ssafy.tripds.estate.model.dto.EstatePlannerParamDto;
 import com.ssafy.tripds.estate.model.service.EstateService;
@@ -8,10 +9,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/estate/planner")
@@ -39,4 +39,12 @@ public class EstatePlannerController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
+    @GetMapping("/info/{email}")
+    public ResponseEntity<?> getEstatePlannerInfoByEmail(@PathVariable ("email") String email){
+        Long memberId = memberService.userInfo(email).getId();
+        List<String> registerNumberList = estateService.selectEstatePlannerByMemberId(memberId);
+        List<EstateDto> estateDtoList = estateService.getEstateInfoByRegisterNumbers(registerNumberList);
+
+        return new ResponseEntity<>(estateDtoList, HttpStatus.OK);
+    }
 }
