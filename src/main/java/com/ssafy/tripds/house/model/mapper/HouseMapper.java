@@ -22,6 +22,6 @@ public interface HouseMapper {
     List<HouseDealDto> findOneRoomDealList(String roadName);
     List<HouseDealDto> findOfficetelDealList(String roadName);
     ReviewSummaryDto findReviewSummary(String roadName);
-    ReviewDto findReviewList(String roadName);
-    Object insertReview(ReviewWriteDto reviewWriteDto);
+    List<ReviewDto> findReviewList(String roadName);
+    void insertReview(ReviewWriteDto reviewWriteDto);
 }

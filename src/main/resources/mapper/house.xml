@@ -328,13 +328,14 @@
   </select>
 
   <insert id="insertReview" parameterType="reviewFormType">
-    insert into review(author_id, residence_period, transport_rating, complex_rating, facility_rating, content)
+    insert into review(author_id, residence_period, transport_rating, complex_rating, facility_rating, content, id_road_name)
     select id,
            CONCAT(#{residencePeriodStart}, '-', #{residencePeriodEnd}),
            #{transportRating},
            #{complexRating},
            #{facilityRating},
-           #{content}
+           #{content},
+           #{roadName}
     from member
     where email = #{authorEmail}
   </insert>

@@ -23,7 +23,7 @@ public interface HouseService {
 
     ReviewSummaryDto getReviewSummary(String roadName);
 
-    ReviewDto getReviewList(String roadName);
+    List<ReviewDto> getReviewList(String roadName);
 
-    Object registerReview(ReviewWriteDto reviewWriteDto);
+    void registerReview(ReviewWriteDto reviewWriteDto);
 }

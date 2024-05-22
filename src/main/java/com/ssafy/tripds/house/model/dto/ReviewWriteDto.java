@@ -10,6 +10,7 @@ public record ReviewWriteDto(
     String transportRating,
     String complexRating,
     String facilityRating,
-    String content
+    String content,
+    String roadName
 ) {
 }
