@@ -66,4 +66,11 @@
             #{registerNumber}
         </foreach>
     </select>
+
+    <!-- 부동산 상세정보 얻기 -->
+    <select id="getEstateDetail" parameterType="String" resultMap="EstateMap">
+        SELECT *
+        FROM real_estate
+        WHERE register_number = #{registerNumber}
+    </select>
 </mapper>
