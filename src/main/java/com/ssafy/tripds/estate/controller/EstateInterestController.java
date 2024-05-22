@@ -36,7 +36,7 @@ public class EstateInterestController {
                 .build();
 
         int result = estateService.insertEstateInterest(estateInterestDto);
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        return new ResponseEntity<>(result, HttpStatus.CREATED);
     }
 
     @GetMapping("/info/{email}")
