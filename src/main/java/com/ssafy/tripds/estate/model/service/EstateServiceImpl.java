@@ -1,8 +1,9 @@
-package com.ssafy.tripds.estateplanner.model.service;
+package com.ssafy.tripds.estate.model.service;
 
-import com.ssafy.tripds.estateplanner.model.dto.EstateDto;
-import com.ssafy.tripds.estateplanner.model.dto.EstateInterestDto;
-import com.ssafy.tripds.estateplanner.model.mapper.EstateMapper;
+import com.ssafy.tripds.estate.model.dto.EstateDto;
+import com.ssafy.tripds.estate.model.dto.EstateInterestDto;
+import com.ssafy.tripds.estate.model.dto.EstatePlannerDto;
+import com.ssafy.tripds.estate.model.mapper.EstateMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,7 @@ public class EstateServiceImpl implements EstateService {
 
     private final EstateMapper estateMapper;
 
+    /////// 관심부동산 ///////
     @Transactional
     @Override
     public int insertEstateInterest(EstateInterestDto estateInterestDto) {
@@ -46,6 +48,19 @@ public class EstateServiceImpl implements EstateService {
     public List<EstateDto> getEstateInfoByRegisterNumbers(List<String> registerNumberList) {
         try{
             return estateMapper.getEstateInfoByRegisterNumbers(registerNumberList);
+        }
+        catch (Exception e){
+            log.error("exception = {}" ,e);
+            throw new RuntimeException(e);
+        }
+    }
+
+    /////// 부동산 플래너 ///////
+    @Transactional
+    @Override
+    public int insertEstatePlanner(EstatePlannerDto estatePlannerDto) {
+        try{
+            return estateMapper.insertEstatePlanner(estatePlannerDto);
         }
         catch (Exception e){
             log.error("exception = {}" ,e);
