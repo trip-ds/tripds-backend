@@ -40,7 +40,7 @@ public class EstateInterestController {
     }
 
     @GetMapping("/info/{email}")
-    public ResponseEntity<?> getInterestEsateInfo(@PathVariable ("email") String email){
+    public ResponseEntity<?> getEstateInterestInfoByEmail(@PathVariable ("email") String email){
         Long memberId = memberService.userInfo(email).getId();
         List<String> registerNumberList = estateService.selectEstateInterestByMemberId(memberId);
         List<EstateDto> estateDtoList = estateService.getEstateInfoByRegisterNumbers(registerNumberList);
