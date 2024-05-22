@@ -11,6 +11,7 @@ import java.util.List;
 @Mapper
 public interface EstateMapper {
     // 부동산 (공통) //
+    EstateDto getEstateDetail(String registerNumber) throws SQLException;
     List<EstateDto> getEstateInfoByRegisterNumbers(List<String> registerNumberList) throws SQLException;
 
     // 관심 부동산 //
