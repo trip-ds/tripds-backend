@@ -2,18 +2,18 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.ssafy.tripds.cctv.model.mapper.HouseMapper">
+<mapper namespace="com.ssafy.tripds.house.model.mapper.HouseMapper">
   <resultMap id="houseDealSummaryRMap" type="houseDealSummaryType">
     <result column="building_name" property="name" />
     <result column="road_name" property="roadName" />
     <result column="x_coordinate" property="xCoordinate" />
     <result column="y_coordinate" property="yCoordinate" />
-    <result column="cnt" property="cnt" />
+    <result column="avg_net_area" property="avgNetArea" />
     <result column="contract_type" property="contractType" />
     <result column="avg_monthly_rent" property="avgMonthlyRent" />
     <result column="avg_deposit" property="avgDeposit" />
     <result column="avg_price" property="avgPrice" />
-    <result column="avg_net_area" property="avgNetArea" />
+    <result column="cnt" property="cnt" />
   </resultMap>
 
   <resultMap id="HouseDealShortSummaryRMap" type="houseDealSummaryShortType">
@@ -72,7 +72,7 @@
 
   <select id="findOneRoomDealListSummary" parameterType="map">
     SELECT info.*,
-           AVG(oneroom.net_area) AS net_area,
+           AVG(oneroom.net_area) AS avg_net_area,
            CASE WHEN SUM(CASE WHEN oneroom.contract_type = '매매' THEN 1 ELSE 0 END) >= GREATEST(SUM(CASE WHEN oneroom.contract_type = '전세' THEN 1 ELSE 0 END),SUM(CASE WHEN oneroom.contract_type = '월세' THEN 1 ELSE 0 END)) THEN '매매'
                 WHEN SUM(CASE WHEN oneroom.contract_type = '전세' THEN 1 ELSE 0 END) >= GREATEST(SUM(CASE WHEN oneroom.contract_type = '매매' THEN 1 ELSE 0 END),SUM(CASE WHEN oneroom.contract_type = '월세' THEN 1 ELSE 0 END)) THEN '전세'
                 ELSE '월세' END AS contract_type,
@@ -83,7 +83,7 @@
     FROM (
            SELECT
              building_name,
-             CASE WHEN bu_bun > 0 THEN CONCAT(road_name, ' ', bon_bun, '-', bu_bun) ELSE CONCAT(road_name, ' ', bon_bun) END AS road_name,
+             CASE WHEN bu_bun <![CDATA[>]]> 0 THEN CONCAT(road_name, ' ', bon_bun, '-', bu_bun) ELSE CONCAT(road_name, ' ', bon_bun) END AS road_name,
              x_coordinate,
              y_coordinate
            FROM houseinfo
