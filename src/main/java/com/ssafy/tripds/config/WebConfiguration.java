@@ -37,6 +37,8 @@ public class WebConfiguration implements WebMvcConfigurer {
 				.addPathPatterns("/api/**")
 				.excludePathPatterns("/api/user/login", "/api/user/signup")
 				.excludePathPatterns("/api/cctv/**", "/api/light/**")
+				.excludePathPatterns("/api/estate/**")
+				.addPathPatterns("/api/estate/planner/**", "/api/estate/interest/**")
 				.excludePathPatterns("/api/house/**")
 				.excludePathPatterns(String.valueOf(HttpMethod.OPTIONS), "/**");
 	}

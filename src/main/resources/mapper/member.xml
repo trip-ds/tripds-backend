@@ -29,7 +29,7 @@
 
     <!-- 유저 조회 -->
     <select id="userInfo" parameterType="string" resultMap="basicMember">
-        select email, nickname, age, address, created_at
+        select id, email, nickname, age, address, created_at
         from member
         where email = #{email}
     </select>

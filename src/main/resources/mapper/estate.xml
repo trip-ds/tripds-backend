@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssafy.tripds.estate.model.mapper.EstateMapper">
+    <resultMap id="EstateMap" type="EstateDto">
+        <id property="registerNumber" column="register_number" />
+        <result property="name" column="name" />
+        <result property="roadName" column="road_name" />
+        <result property="bonBun" column="bon_bun" />
+        <result property="buBun" column="bu_bun" />
+        <result property="dongName" column="dong_name" />
+        <result property="complexName" column="complex_name" />
+        <result property="phone" column="phone" />
+        <result property="registerDate" column="register_date" />
+        <result property="representativeName" column="representative_name" />
+        <result property="xCoordinate" column="x_coordinate" />
+        <result property="yCoordinate" column="y_coordinate" />
+    </resultMap>
+
+    <resultMap id="EstateInterestMap" type="EstateInterestDto">
+        <id property="id" column="id" />
+        <result property="registerNumber" column="register_number" />
+        <result property="memberId" column="member_id" />
+    </resultMap>
+
+    <resultMap id="EstatePlannerMap" type="EstatePlannerDto">
+        <id property="id" column="id" />
+        <result property="registerNumber" column="register_number" />
+        <result property="memberId" column="member_id" />
+    </resultMap>
+
+    <!-- member_id와, register_number 삽입 -> 관심부동산 등록 -->
+    <insert id="insertEstateInterest" parameterType="EstateInterestDto">
+        INSERT INTO estate_interest (member_id, register_number)
+        VALUES (#{memberId}, #{registerNumber})
+    </insert>
+
+    <!-- member_id와, register_number 삽입 -> 부동산 플래너 등록 -->
+    <insert id="insertEstatePlanner" parameterType="EstatePlannerDto">
+        INSERT INTO estate_planner (member_id, register_number)
+        VALUES (#{memberId}, #{registerNumber})
+    </insert>
+
+    <!-- member_id로 관심부동산 register_number 조회하기 -> 부동산 찾을 때 이용 -->
+    <select id="selectEstateInterestByMemberId" parameterType="Long" resultType="string">
+        SELECT register_number
+        FROM estate_interest
+        WHERE member_id = #{memberId}
+    </select>
+
+    <!-- member_id로 부동산 플래너 register_number 조회하기 -> 부동산 찾을 때 이용 -->
+    <select id="selectEstatePlannerByMemberId" parameterType="Long" resultType="string">
+        SELECT register_number
+        FROM estate_planner
+        WHERE member_id = #{memberId}
+    </select>
+
+
+    <!-- register_number 리스트를 파라미터로 받아 부동산 정보 조회 -->
+    <select id="getEstateInfoByRegisterNumbers" parameterType="list" resultMap="EstateMap">
+        SELECT *
+        FROM real_estate
+        WHERE register_number IN
+        <foreach item="registerNumber" collection="list" open="(" separator="," close=")">
+            #{registerNumber}
+        </foreach>
+    </select>
+
+    <!-- 부동산 상세정보 얻기 -->
+    <select id="getEstateDetail" parameterType="String" resultMap="EstateMap">
+        SELECT *
+        FROM real_estate
+        WHERE register_number = #{registerNumber}
+    </select>
+</mapper>
