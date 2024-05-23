@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -47,8 +48,10 @@ public class HouseController {
     }
 
     @GetMapping("/deal/list")
-    public ResponseEntity<?> getDealList(@RequestParam("roadName") String roadName) {
-        return new ResponseEntity<>(houseService.getDealList(roadName), HttpStatus.OK);
+    public ResponseEntity<?> getDealList(
+            @RequestParam("residenceType") String residenceType,
+            @RequestParam("roadName") String roadName) {
+        return new ResponseEntity<>(houseService.getDealList(residenceType, roadName), HttpStatus.OK);
     }
 
     @GetMapping("/review/summary")
@@ -62,7 +65,7 @@ public class HouseController {
     }
 
     @PostMapping("/review")
-    public ResponseEntity<?> registerReview(ReviewWriteDto reviewWriteDto) {
+    public ResponseEntity<?> registerReview(@ModelAttribute ReviewWriteDto reviewWriteDto) {
         houseService.registerReview(reviewWriteDto);
 
         return new ResponseEntity<>(HttpStatus.CREATED);

@@ -49,8 +49,11 @@ public class HouseServiceImpl implements HouseService {
     }
 
     @Override
-    public HouseDealDto getDealList(String roadName) {
-        return houseMapper.findDealList(roadName);
+    public List<HouseDealDto> getDealList(String residenceType, String roadName) {
+        if (residenceType.equals("oneroom")) return houseMapper.findOneRoomDealList(roadName);
+        else if (residenceType.equals("officetel")) return houseMapper.findOfficetelDealList(roadName);
+
+        return null;
     }
 
     @Override
@@ -59,12 +62,13 @@ public class HouseServiceImpl implements HouseService {
     }
 
     @Override
-    public ReviewDto getReviewList(String roadName) {
+    public List<ReviewDto> getReviewList(String roadName) {
         return houseMapper.findReviewList(roadName);
     }
 
     @Override
-    public Object registerReview(ReviewWriteDto reviewWriteDto) {
-        return houseMapper.insertReview(reviewWriteDto);
+    public void registerReview(ReviewWriteDto reviewWriteDto) {
+//        return houseMapper.insertReview(reviewWriteDto);
+        houseMapper.insertReview(reviewWriteDto);
     }
 }

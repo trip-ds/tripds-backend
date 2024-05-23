@@ -19,11 +19,11 @@ public interface HouseService {
 
     HouseDealShortSummaryDto getDealSummary(String residenceType, String roadName);
 
-    HouseDealDto getDealList(String roadName);
+    List<HouseDealDto> getDealList(String residenceType, String roadName);
 
     ReviewSummaryDto getReviewSummary(String roadName);
 
-    ReviewDto getReviewList(String roadName);
+    List<ReviewDto> getReviewList(String roadName);
 
-    Object registerReview(ReviewWriteDto reviewWriteDto);
+    void registerReview(ReviewWriteDto reviewWriteDto);
 }

@@ -8,10 +8,10 @@ public record HouseDealSummaryDto(
         String roadName,
         Double xCoordinate,
         Double yCoordinate,
-        Integer cnt,
+        Double avgNetArea,
         String contractType,
         Double avgMonthlyRent,
         Double avgDeposit,
         Double avgPrice,
-        Double avgNetArea) {
+        Integer cnt) {
 }
